@@ -14,7 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   itemID: item_bandage
   itemName: Eski Bandaj
+  dropPrefab: {fileID: 2242703307029458302, guid: d04bfd957fd8bdf448b78a81b20fcc0a,
+    type: 3}
   description: "Biraz kirli ama kanamay\u0131 durdurmak i\xE7in i\u015Fe yarayabilir."
   icon: {fileID: 21300000, guid: 29e0cada20a05f946bcf833643137c3b, type: 3}
   type: 2
   maxStack: 5
+  healAmount: 25

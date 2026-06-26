@@ -6,7 +6,10 @@ public class ItemData : ScriptableObject
 {
     [Header("Temel Bilgiler")]
     public string itemID; 
-    public string itemName; 
+    public string itemName;
+
+    [Header("3D Model")]
+    public GameObject dropPrefab; 
 
     [TextArea(3, 5)] 
     public string description;
@@ -15,9 +18,12 @@ public class ItemData : ScriptableObject
 
     [Header("Envanter Ayarlarý")]
     public ItemType type; 
-    public int maxStack = 1; 
+    public int maxStack = 1;
 
-  
+    [Header("Tüketim Ayarlarý")]
+    public int healAmount = 25;
+
+
 }
 
 

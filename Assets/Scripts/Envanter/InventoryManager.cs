@@ -16,6 +16,9 @@ public class InventoryManager : MonoBehaviour
     [Header("Girdi (Input) Ayarlarý")]
     [SerializeField] private InputActionReference toggleInventoryAction;
 
+    [Header("Yere Atma (Drop) Ayarlarý")]
+    [SerializeField] private Transform dropPoint;
+
     private PlayerInput playerInputComponent;
     private InventorySlot[] slots; // Çantadaki tüm karelerin listesi
     private bool isInventoryOpen = false;
@@ -86,6 +89,45 @@ public class InventoryManager : MonoBehaviour
         Debug.LogWarning("Envanter aðzýna kadar dolu!");
         return false;
     }
+
+    public void DropItemFromSlot(InventorySlot slot)
+    {
+        if (slot.IsEmpty || slot.CurrentItem.dropPrefab == null) return;
+
+        // 1. 3D Objeyi dünyada yarat (DropPoint'in konumunda)
+        Instantiate(slot.CurrentItem.dropPrefab, dropPoint.position, Quaternion.identity);
+
+        // 2. Çantadaki sayýyý azalt (Bu fonksiyon sayý 0 olursa yuvayý kendi temizler)
+        slot.RemoveAmount(1);
+    }
+
+
+    public void ConsumeItemFromSlot(InventorySlot slot)
+    {
+        if (slot.IsEmpty) return;
+
+        // Eþyanýn can verme özelliði var mý kontrol et (healAmount > 0)
+        if (slot.CurrentItem.healAmount > 0)
+        {
+            // Eðer canýmýz zaten full ise eþyayý boþa harcatma
+            if (PlayerHealth.Instance.currentHealth >= PlayerHealth.Instance.maxHealth)
+            {
+                Debug.Log("Canýn zaten dolu, bandajý boþuna harcama!");
+                return;
+            }
+
+            // Karaktere can bas
+            PlayerHealth.Instance.Heal(slot.CurrentItem.healAmount);
+
+            // Kullanýlan eþyayý çantadan 1 adet eksilt
+            slot.RemoveAmount(1);
+        }
+        else
+        {
+            Debug.Log("Bu eþya tüketilemez!");
+        }
+    }
+
 
     public void ToggleInventory(InputAction.CallbackContext context)
     {

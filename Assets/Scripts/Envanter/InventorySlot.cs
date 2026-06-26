@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IPointerClickHandler
 {
     [Header("UI Referanslarý")]
     [SerializeField] private Image iconImage;
@@ -53,5 +54,35 @@ public class InventorySlot : MonoBehaviour
         iconImage.enabled = false;
         stackText.text = "";
         stackText.enabled = false;
+    }
+
+    public void RemoveAmount(int amount)
+    {
+        CurrentStack -= amount;
+        if (CurrentStack <= 0)
+        {
+            ClearSlot(); // Sayý 0'a düþerse yuvayý tamamen boþalt
+        }
+        else
+        {
+            stackText.text = CurrentStack.ToString();
+            stackText.enabled = (CurrentStack > 1);
+        }
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (IsEmpty) return; 
+
+        
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            InventoryManager.Instance.DropItemFromSlot(this);
+        }
+        
+        else if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            InventoryManager.Instance.ConsumeItemFromSlot(this);
+        }
     }
 }
