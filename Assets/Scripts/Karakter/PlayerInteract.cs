@@ -10,10 +10,10 @@ public class PlayerInteract : MonoBehaviour
     [SerializeField] private LayerMask interactableLayer; // Lazer sadece eþyalara çarpsýn (Duvarlarý görmezden gelsin)
 
     [Header("UI Ayarlarý")]
-    [SerializeField] private TextMeshProUGUI promptText; // Ekranda çýkacak "E - Al" yazýsý
+    [SerializeField] private TextMeshProUGUI promptText; // Ekranda çýkacak "F - Al" yazýsý
 
     [Header("Girdi (Input)")]
-    [SerializeField] private InputActionReference interactAction; // E tuþu
+    [SerializeField] private InputActionReference interactAction; // Unity Editor'den F'ye ayarlanmalý
 
     private ItemPickup currentTarget;
 
@@ -31,7 +31,6 @@ public class PlayerInteract : MonoBehaviour
     {
         CheckForInteractable();
 
-        // E tuþuna basýldýysa ve hedefte bir eþya varsa
         if (interactAction != null && interactAction.action.WasPressedThisFrame() && currentTarget != null)
         {
             currentTarget.PickUp();
@@ -54,7 +53,11 @@ public class PlayerInteract : MonoBehaviour
             if (pickup != null)
             {
                 currentTarget = pickup;
-                promptText.text = "E - " + pickup.itemData.itemName + " Al";
+
+             
+                promptText.text = "F - " + pickup.itemData.itemName + " Al";
+                // -----------------------------------
+
                 promptText.gameObject.SetActive(true);
                 return; // Bulduk, aramayý býrak
             }
