@@ -29,7 +29,6 @@ public class InventoryManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
-        // Çöp satýrý tamamen sildik. Sadece InputActionReference'ý dinliyoruz.
         if (toggleInventoryAction != null)
         {
             toggleInventoryAction.action.Enable();
@@ -101,7 +100,6 @@ public class InventoryManager : MonoBehaviour
         slot.RemoveAmount(1);
     }
 
-
     public void ConsumeItemFromSlot(InventorySlot slot)
     {
         if (slot.IsEmpty) return;
@@ -128,6 +126,54 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    // --- MERMÝ SÝSTEMÝ ÝÇÝN YENÝ EKLENEN KONTROLLER ---
+
+    /// <summary>
+    /// Çantada belirtilen isimde bir eþya olup olmadýðýný kontrol eder.
+    /// </summary>
+    public bool HasItem(string searchItemName)
+    {
+        foreach (InventorySlot slot in slots)
+        {
+            if (!slot.IsEmpty && slot.CurrentItem.name == searchItemName)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Çantada belirtilen isimdeki eþyadan toplam kaç adet olduðunu sayar.
+    /// </summary>
+    public int GetItemCount(string targetItemName)
+    {
+        int totalCount = 0;
+        foreach (InventorySlot slot in slots)
+        {
+            if (!slot.IsEmpty && slot.CurrentItem.name == targetItemName)
+            {
+                // HATA DÜZELTÝLDÝ: slot.amount yerine senin kodundaki doðru deðiþken olan slot.CurrentStack kullanýldý.
+                totalCount += slot.CurrentStack;
+            }
+        }
+        return totalCount;
+    }
+
+    /// <summary>
+    /// Çantadan belirtilen isimdeki eþyadan belirli bir miktar siler.
+    /// </summary>
+    public void RemoveItemByName(string targetItemName, int amountToRemove)
+    {
+        foreach (InventorySlot slot in slots)
+        {
+            if (!slot.IsEmpty && slot.CurrentItem.name == targetItemName)
+            {
+                slot.RemoveAmount(amountToRemove);
+                return;
+            }
+        }
+    }
 
     public void ToggleInventory(InputAction.CallbackContext context)
     {
