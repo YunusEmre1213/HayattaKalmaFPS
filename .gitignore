@@ -26,6 +26,11 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+*.fbx
+*.obj
+*.dae
+*.glb
+*.blend
 
 # İşletim sistemi dosyaları
 .DS_Store
